@@ -27,5 +27,5 @@ jobs:
     - name: Upload metadata file
       uses: actions/upload-artifact@v4
       with:
-        name: image-metadata
-        path: image_metadata.json
+        name: images_metadata
+        path: images_metadata.json
