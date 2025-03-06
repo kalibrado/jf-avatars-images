@@ -1,4 +1,4 @@
-name: Generate Image Metadata
+name: Update Image Metadata
 
 on:
   push:
@@ -6,26 +6,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  generate-metadata:
+  update-metadata:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
+      with:
+        fetch-depth: 0
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-    
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pillow
 
     - name: Run metadata script
-      run: python image_indexer.py
-    
-    - name: Upload metadata file
-      uses: actions/upload-artifact@v4
-      with:
-        name: images_metadata
-        path: images_metadata.json
+      run: python image_metadata_generator.py
+
+    - name: Commit and push if changed
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add images_metadata.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update images metadata" && git push)
