@@ -24,7 +24,7 @@ jobs:
         pip install pillow
 
     - name: Run metadata script
-      run: python image_metadata_generator.py
+      run: python image_indexer.py
 
     - name: Commit and push if changed
       run: |
