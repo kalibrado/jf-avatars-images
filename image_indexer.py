@@ -24,11 +24,10 @@ def generate_image_metadata(image_folder, base_url, output_file):
                         
                         # Ajout des données au tableau
                         image_data.append({
-                            "name": os.path.splitext(file)[0],  # Nom sans extension
+                            "name": os.path.splitext(file)[0],
                             "url": f"{url}?raw=true",
                             "size_in_bytes": size_in_bytes,
                             "dimensions": {"width": width, "height": height},
-                            "creation_date": creation_date
                         })
                 except Exception as e:
                     print(f"Erreur lors du traitement de l'image {file}: {e}")
@@ -38,7 +37,7 @@ def generate_image_metadata(image_folder, base_url, output_file):
     print(f"Fichier JSON généré : {output_file}")
 
 image_folder = "images"
-base_url = "https://github.com/kalibrado/js-avatars-images/blob/main/images/"
+base_url = "https://raw.githubusercontent.com/kalibrado/js-avatars-images/main/images/"
 output_file = "images_metadata.json"
 
 generate_image_metadata(image_folder, base_url, output_file)
