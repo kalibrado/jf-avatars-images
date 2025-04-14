@@ -4,40 +4,55 @@ from urllib.parse import urljoin
 from PIL import Image
 from datetime import datetime
 
-def generate_image_metadata(image_folder, base_url, output_file):
+
+base_url = "https://raw.githubusercontent.com/kalibrado/js-avatars-images/main/images/"
+image_folder = "images"
+output_src_images = "images_metadata.json"
+output_src_folders = "cat_metadata.json"
+
+
+def generate_image_metadata(image_folder, base_url, output_src_images):
     image_data = []
-    
+    folders_names = []
+
     for root, _, files in os.walk(image_folder):
         for file in files:
-            if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+            if file.lower().endswith((".png", ".jpg", ".jpeg", ".gif", ".bmp")):
                 file_path = os.path.join(root, file)
+                folder_name = os.path.basename(root)
                 relative_path = os.path.relpath(file_path, image_folder)
-                url = urljoin(base_url, relative_path.replace('\\', '/'))
-                
-                # Récupération des métadonnées de l'image
+                url = urljoin(base_url, relative_path.replace("\\", "/"))
+                if not folder_name in folders_names:
+                    folders_names.append(folder_name)
+
                 try:
                     with Image.open(file_path) as img:
-                        width, height = img.size  # Dimensions de l'image
-                        size_in_bytes = os.path.getsize(file_path)  # Taille en octets
-                        creation_time = os.path.getctime(file_path)  # Timestamp de création
-                        creation_date = datetime.fromtimestamp(creation_time).strftime('%Y-%m-%d %H:%M:%S')  # Format lisible
-                        
-                        # Ajout des données au tableau
-                        image_data.append({
-                            "name": os.path.splitext(file)[0],
-                            "url": f"{url}?raw=true",
-                            "size_in_bytes": size_in_bytes,
-                            "dimensions": {"width": width, "height": height},
-                        })
+                        width, height = img.size
+                        size_in_bytes = os.path.getsize(file_path)
+                        creation_time = os.path.getctime(file_path)
+                        creation_date = datetime.fromtimestamp(creation_time).strftime(
+                            "%Y-%m-%d %H:%M:%S"
+                        )
+
+                        image_data.append(
+                            {
+                                "name": os.path.splitext(file)[0],
+                                "folder": folder_name,
+                                "url": f"{url}?raw=true",
+                                "size_in_bytes": size_in_bytes,
+                                "dimensions": {"width": width, "height": height},
+                            }
+                        )
                 except Exception as e:
                     print(f"Erreur lors du traitement de l'image {file}: {e}")
-    with open(output_file, 'w', encoding='utf-8') as f:
+
+    with open(output_src_images, "w", encoding="utf-8") as f:
         json.dump(image_data, f, indent=2, ensure_ascii=False)
+    print(f"Fichier JSON généré : {output_src_images}")
 
-    print(f"Fichier JSON généré : {output_file}")
+    with open(output_src_folders, "w", encoding="utf-8") as f:
+        json.dump(folders_names, f, indent=2, ensure_ascii=False)
+    print(f"Fichier JSON généré : {output_src_folders}")
 
-image_folder = "images"
-base_url = "https://raw.githubusercontent.com/kalibrado/js-avatars-images/main/images/"
-output_file = "images_metadata.json"
 
-generate_image_metadata(image_folder, base_url, output_file)
+generate_image_metadata(image_folder, base_url, output_src_images)
