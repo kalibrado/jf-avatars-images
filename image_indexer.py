@@ -8,7 +8,7 @@ from datetime import datetime
 base_url = "https://raw.githubusercontent.com/kalibrado/js-avatars-images/main/images/"
 image_folder = "images"
 output_src_images = "images_metadata.json"
-output_src_folders = "cat_metadata.json"
+output_src_folders = "folders_names.json"
 
 
 def generate_image_metadata(image_folder, base_url, output_src_images):
