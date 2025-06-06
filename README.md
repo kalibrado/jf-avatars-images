@@ -1,4 +1,4 @@
-# js-avatars-images
+# jf-avatars-images
 
 A curated collection of avatar images and metadata designed to work seamlessly with the [jf-avatars](https://github.com/kalibrado/jf-avatars) project.
 
@@ -23,7 +23,7 @@ To use this image repository with `jf-avatars`, simply point to the latest relea
 ```html
 <script
   type="module"
-  src="https://github.com/kalibrado/js-avatars/releases/download/{version}/main.js"
+  src="https://github.com/kalibrado/jf-avatars/releases/download/{version}/main.js"
   defer
 ></script>
 ```
